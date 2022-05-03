@@ -3,7 +3,7 @@ Credit <- read.csv("credit.csv")
 Credit <- Credit %>%
   mutate(Time = rev(row_number()))%>%
   as_tsibble(index = Time)
-  
+
 gg_tsdisplay(Credit, plot_type = "partial")
 
 # -----------------------------------------------------------------------------
@@ -36,11 +36,20 @@ fit <- Training %>%
 fit %>%
   glance()
 
-fit %>%
-  select(arima) %>%
-  forecast(h = 12) %>%
-  autoplot(Training)
+bc_pred <- fit %>%
+  forecast(Holdout)
+
+pred <- inv_box_cox(bc_pred$.mean,lambda)
 
 # -----------------------------------------------------------------------------
 
+mape <- function(y_pred,y_actual){
+  mean(abs((y_pred-y_actual)/y_actual))
+}
 
+rmse <- function(y_pred,y_actual){
+  sqrt(mean((y_pred-y_actual)^2))
+}
+
+mape(pred, Holdout$ï..credit_in_millions)
+rmse(pred, Holdout$ï..credit_in_millions)
