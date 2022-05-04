@@ -1,6 +1,12 @@
+#LSTM Code by Jack Hutchins
+#This library uses keras and tensorflow to create an LSTM
+#These libraries can be difficult to install since they are originally written
+#in python, refer to online guides for installation instructions
 library(keras)
 library(tensorflow)
 library(fpp3)
+
+#remove or change to an appropriate environment to run
 use_condaenv("apple_tensorflow", required = T)
 
 data = read.csv("credit.csv")
